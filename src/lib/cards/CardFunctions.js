@@ -2,20 +2,16 @@ function suffle(deck){
   return deck.sort(() => 50-Math.random()*100);
 }
 
-function getDeck(){
-  const suits = ["spades", "diams", "clubs", "hearts"];
-  const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-	const deck = [];
+const Suits = ["spades", "diams", "clubs", "hearts"];
+const Ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+const Deck = Suits.map(suit => Ranks.map(rank => ({
+  rank, 
+  suit, 
+  isSelected: false,
+}))).flat();
 
-	for(var i = 0; i < suits.length; i++)
-	{
-		for(var j = 0; j < ranks.length; j++)
-		{
-			var card = {rank: ranks[j], suit: suits[i], isSelected:false};
-			deck.push(card);
-		}
-	}
-	return deck;
+function getDeck(){
+	return suffle([...Deck]);
 }
 
 function dealCards(deck, numOfCards){
@@ -97,6 +93,7 @@ class RateableCards {
     this.hand = hand;
     this.byRank = groupBy( this.hand,'rank' );
     this.byLengthRank = groupBy( Object.values(this.byRank), 'length' );
+    console.log(Object.entries( this.byLengthRank ));
     this.bySuit = groupBy(this.hand,'suit');
   }
 

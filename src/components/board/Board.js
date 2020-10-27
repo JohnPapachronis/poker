@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
+import Hand from 'components/hand/Hand.js';
+import { getDeck, dealCards, countSelected } from 'lib/cards/CardFunctions.js';
+import pokerHand from 'lib/poker/PokerHand.js';
+
 import logo from './css/logo.svg';
-import Hand from '../hand/Hand.js';
-import { getDeck, suffle, dealCards, countSelected } from '../../lib/cards/CardFunctions.js';
 
 const Board = () => {
 
-  const [deck, setDeck] = useState(suffle(getDeck()));
+  const [deck, setDeck] = useState(getDeck());
   const [myHand, setMyHand] = useState(null);
   const [aiHand, setAiHand] = useState(null);
   
@@ -39,13 +42,18 @@ const Board = () => {
     setDeck(newDeck);
   }
 
-  const checkWinner = (myHand,aiHand) => {
-    //getElementById("aiHand").visible = true;
+  const checkWinner = () => {
+    const myPokerHand = new pokerHand(myHand);
+    const aiPokerHand = new pokerHand(aiHand);
+    console.log('');
+    console.log( myPokerHand.stringValue > aiPokerHand.stringValue
+            ? 'You win!'
+            : 'AI wins!');
   }
 
   return (
     <div className="Board">
-      {aiHand && <Hand id="aiHand" hand={aiHand} visible={false} onClick={()=>{}} />}
+      {aiHand && <Hand id="aiHand" hand={aiHand} visible={true} onClick={()=>{}} />}
       <img src={logo} className="App-logo" alt="logo" />
       {myHand && <Hand id="myHand" hand={myHand} visible={true} onClick={(i)=>selectCard(i,myHand,3)} />}
       <button onClick={() => tradeCards(deck, myHand)}> Trade Cards </button>
