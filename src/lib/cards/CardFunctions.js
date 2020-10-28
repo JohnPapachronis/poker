@@ -91,17 +91,20 @@ class RateableCards {
 
   constructor(hand) {
     this.hand = hand;
-    this.byRank = groupBy( this.hand,'rank' );
-    this.byLengthRank = groupBy( Object.values(this.byRank), 'length' );
-    console.log(Object.entries( this.byLengthRank ));
+    const byValueUnordered = groupBy( this.hand,'value' );
+    const byValue = {};
+    Object.keys(byValueUnordered).sort().forEach(function(key) {
+      byValue[key] = byValueUnordered[key];
+    });
+    this.byLengthValue = groupBy( Object.values(byValue), 'length' );
     this.bySuit = groupBy(this.hand,'suit');
   }
 
   handValue(){
     return Object
-      .entries( this.byLengthRank )
+      .entries( this.byLengthValue )
         .reduce((accumulator, currentValue) => {
-          currentValue[1].forEach(element => 
+          currentValue[1].forEach(element =>
             accumulator = currentValue[0] + element[0].value + accumulator
             );
           return accumulator;
@@ -113,7 +116,7 @@ class RateableCards {
   }
 
   hasSameRank(num) {
-    return this.byLengthRank.hasOwnProperty( `${num}` );
+    return this.byLengthValue.hasOwnProperty( `${num}` );
   }
 
   isSameSuit() {
@@ -121,8 +124,8 @@ class RateableCards {
   }
   
   hasNoPairsOf(num, pairs) {
-    return ( this.byLengthRank.hasOwnProperty( `${pairs}` ) )
-          ? this.byLengthRank[`${pairs}`].length === num 
+    return ( this.byLengthValue.hasOwnProperty( `${pairs}` ) )
+          ? this.byLengthValue[`${pairs}`].length === num 
           : false;  
   }
 
