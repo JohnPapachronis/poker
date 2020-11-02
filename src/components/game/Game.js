@@ -50,7 +50,7 @@ const Game = () => {
 
   const checkWinner = () => {
     console.log('');
-    console.log( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+    alert( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
   }
 
   return (  
