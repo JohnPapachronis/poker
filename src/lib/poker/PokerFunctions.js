@@ -1,4 +1,4 @@
-import { RateableCards } from '../cards/CardFunctions.js'
+import { RateableCards, normalizeCard } from '../cards/CardFunctions.js'
 
 const pokerRatings = {
   RoyalStraightFlush: hand => hand.isStraight(5) && hand.isSameSuit() && hand.hasAce(),
@@ -33,4 +33,17 @@ const comboValue = combination => {
                   - 9 );
 }
 
-export { pokerRatings, pokerRateCards, handValue, comboValue };
+const PokerHand = hand => {
+
+  const normHand = hand.map(card=> normalizeCard(card)); 
+  const combination = pokerRateCards(normHand);
+  const stringValue = comboValue(combination) + handValue(normHand);
+  console.log(normHand);
+  console.log('COMBINATION: ----------- ' + combination); 
+  console.log( comboValue(combination)+' + ' + handValue(normHand) + ' = ' + stringValue);
+  console.log('');
+  return stringValue;
+
+}
+
+export { PokerHand };

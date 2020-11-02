@@ -1,5 +1,6 @@
-import { getDeck } from 'lib/cards/CardFunctions';
 import React,{useState, createContext} from 'react';
+
+import { getDeck } from 'lib/cards/CardFunctions';
 
 export const GameContext = createContext(); 
 

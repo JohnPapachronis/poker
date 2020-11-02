@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { getDeck, dealCards, countSelected } from 'lib/cards/CardFunctions.js';
-import pokerHand from 'lib/poker/PokerHand.js';
-import Board from 'components/board/Board.js';
+import React, { useEffect, useContext } from 'react';
+
 import {GameContext} from 'GameContext.js';
+
+import Board from 'components/board/Board.js';
+
+import { dealCards, countSelected } from 'lib/cards/CardFunctions.js';
+import { PokerHand } from 'lib/poker/PokerFunctions.js';
+
 
 
 const Game = () => {
@@ -45,13 +49,8 @@ const Game = () => {
   }
 
   const checkWinner = () => {
-    const myPokerHand = new pokerHand(myHand);
-    const aiPokerHand = new pokerHand(aiHand);
     console.log('');
-    console.log( myPokerHand.stringValue > aiPokerHand.stringValue
-    // console.log(true
-            ? 'You win!'
-            : 'AI wins!');
+    console.log( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
   }
 
   return (  

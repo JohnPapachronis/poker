@@ -134,7 +134,7 @@ class RateableCards {
                                 .map(elem => elem.weight)
                                 .sort( (a, b) => a - b ) 
                                 )];
-    return sorted[num-1]-sorted[0] == num-1;
+    return sorted[num-1]-sorted[0] === num-1;
   }
 
   nHighCard(n){
