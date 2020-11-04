@@ -90,14 +90,15 @@ const groupBy = (list, criteria) => reduce(
 class RateableCards {
 
   constructor(hand) {
-    this.hand = hand;
-    const byValueUnordered = groupBy( this.hand,'value' );
+    this.hand = hand.map(card => normalizeCard(card));
+    const byValueUnordered = groupBy( this.hand, 'value' );
     const byValue = {};
     Object.keys(byValueUnordered).sort().forEach(function(key) {
       byValue[key] = byValueUnordered[key];
     });
     this.byLengthValue = groupBy( Object.values(byValue), 'length' );
-    this.bySuit = groupBy(this.hand,'suit');
+    this.bySuit = groupBy(this.hand, 'suit');
+    this.byLengthSuit = groupBy( Object.values(this.bySuit), 'length' );
   }
 
   handValue(){
@@ -144,4 +145,4 @@ class RateableCards {
 }
 
 
-export { getDeck, suffle, dealCards, countSelected, normalizeCard, RateableCards };
+export { getDeck, suffle, dealCards, countSelected, normalizeCard, RateableCards,groupBy };
