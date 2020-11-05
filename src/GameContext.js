@@ -37,10 +37,11 @@ export const GameProvider = props => {
     const [newCards,newDeck] = dealCards(deck, countSelected(hand));
     
     const newHand = hand.filter((card) => !(card.isSelected)).concat(newCards); 
-    aiBehavior([...aiHand]);
-    const [newAICards,finalDeck] = dealCards(newDeck, countSelected(aiHand));
-    const newAiHand =  aiHand.filter((card) => !(card.isSelected)).concat(newAICards); 
-    
+    console.log(aiHand);
+    const aiSelectedHand = aiBehavior(aiHand);
+    console.log(aiSelectedHand);
+    const [newAICards,finalDeck] = dealCards(newDeck, countSelected(aiSelectedHand));
+    const newAiHand =  aiSelectedHand.filter((card) => !(card.isSelected)).concat(newAICards); 
     
     setDeck(finalDeck);
     setMyHand(newHand);

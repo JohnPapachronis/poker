@@ -17,6 +17,7 @@ const Game = () => {
     const [cards, newDeck] = dealCards(deck, 5);
     changeMyHand( [cards, newDeck] );
     changeAiHand( dealCards(newDeck, 5) );
+    console.log();
   },[]);
 
   return (  
