@@ -92,11 +92,12 @@ class RateableCards {
   constructor(hand) {
     this.hand = hand.map(card => normalizeCard(card));
     const byValueUnordered = groupBy( this.hand, 'value' );
-    const byValue = {};
+    const byValueOrdered = {};
     Object.keys(byValueUnordered).sort().forEach(function(key) {
-      byValue[key] = byValueUnordered[key];
+      byValueOrdered[key] = byValueUnordered[key];
     });
-    this.byLengthValue = groupBy( Object.values(byValue), 'length' );
+    this.byValue = {...byValueOrdered};
+    this.byLengthValue = groupBy( Object.values(this.byValue), 'length' );
     this.bySuit = groupBy(this.hand, 'suit');
     this.byLengthSuit = groupBy( Object.values(this.bySuit), 'length' );
   }
@@ -131,11 +132,35 @@ class RateableCards {
   }
 
   isStraight(num){
-    const sorted = [...new Set (this.hand
-                                .map(elem => elem.weight)
-                                .sort( (a, b) => a - b ) 
-                                )];
-    return sorted[num-1]-sorted[0] === num-1;
+    const sorted = [...new Set( 
+      this.hand
+        .map(elem => elem.weight)
+          .sort( (a, b) => a - b ) 
+      )];
+    
+    let flag = false;
+    for (let i=0; i<=sorted.length-num; i++){
+      if (sorted[num-1+i]-sorted[i] === num-1) flag = true;
+    }                           
+    return flag;
+  }
+
+  straightList(num){
+    const sorted = [...new Set( 
+      this.hand
+        .map(elem => elem.weight)
+          .sort( (a, b) => a - b ) 
+      )];
+    
+    for (let i=0; i<=sorted.length-num; i++){
+      if (sorted[num-1+i]-sorted[i] === num-1){
+        const subList = sorted.slice(i, num+i);
+        return subList
+          .map(weightOfCard => this.hand
+            .find(card => card.weight === weightOfCard));
+      }
+    }
+    return [];
   }
 
   nHighCard(n){
