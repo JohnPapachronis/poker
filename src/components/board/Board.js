@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import {GameContext} from 'GameContext.js';
 
@@ -7,12 +7,13 @@ import logo from './css/logo.svg';
 
 const Board = () => {
   
-  const { deckValue,myHandValue, aiHandValue,selectCard,
-    tradeCards,
-    checkWinner} = useContext(GameContext);
-    const [deck, setDeck] = deckValue;
-    const [myHand, setMyHand] = myHandValue;
-    const [aiHand, setAiHand] = aiHandValue;
+  const { deckValue,myHandValue, aiHandValue, selectCard, tradeCards, checkWinner} = useContext(GameContext);
+
+  const [deck, setDeck] = deckValue;
+  const [myHand, setMyHand] = myHandValue;
+  const [aiHand, setAiHand] = aiHandValue;
+
+    
   return (
     
     <div className="Board">
@@ -20,7 +21,7 @@ const Board = () => {
       <div className="CardGame">
         
         <div className = "Buttons">
-          <button onClick={() => tradeCards(deck, myHand)}> 
+          <button onClick={() => tradeCards(deck, myHand, aiHand)}> 
             Trade Cards 
           </button>
           <button onClick={() => checkWinner()}>
@@ -28,7 +29,7 @@ const Board = () => {
             </button>
         </div>
         <div className = "enemyBoard">
-          {aiHand && <Hand id="aiHand" hand={aiHand} visible={true} />}
+          {aiHand && <Hand id="aiHand" hand={aiHand} visible={true} onClick = {()=>{}} /> }
         </div>
         <div className = "ReactLogo">
           <img src={logo} className="App-logo" alt="logo" />
@@ -36,8 +37,9 @@ const Board = () => {
         <div className = "playerBoard">
           {myHand && <Hand id="myHand" hand={myHand} visible={true} onClick={(i)=>selectCard(i,myHand,3)} />}
         </div>
-
+        
       </div>
+      
     </div>
    
   )
