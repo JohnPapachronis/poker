@@ -1,4 +1,4 @@
-import { RateableCards} from 'lib/cards/CardFunctions.js'
+import { RateableCards, groupBy, normalizeCard} from 'lib/cards/CardFunctions.js'
 import { pokerRateCards } from 'lib/poker/PokerFunctions.js';
 
 const aiBehavior = ( aiHand ) => {
@@ -11,7 +11,7 @@ const aiBehavior = ( aiHand ) => {
       twoPairSolution(aiHand);
       break;
     case 'OnePair':
-      onePairSolution( aiHand );
+      onePairSolution( [...aiHand] );
       break;
     case 'HighCard':
       console.log("H")
@@ -19,31 +19,32 @@ const aiBehavior = ( aiHand ) => {
     default: console.log('all')
 
   }
+
 }
-const onePairSolution = (hand) => {
-    const rateCards = new RateableCards(hand);
-    console.log((rateCards.byLengthValue)['2'][0][0].rank);
+
+const onePairSolution = (aiHand) => {
+    const rateCards = new RateableCards(aiHand);
     const pairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
-    hand.map(elem => elem.rank !== pairRank ? elem.isSelected = true : elem) 
+    aiHand.map(elem => elem.rank !== pairRank ? elem.isSelected = true : elem) 
     
     
 }
 
-const twoPairSolution =  ( hand ) => {
-  const rateCards = new RateableCards(hand);
+const twoPairSolution =  ( aiHand ) => {
+  const rateCards = new RateableCards(aiHand);
   const firstPairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
   const secondPairRank= (rateCards.byLengthValue)['2'][1][0].rank ;
   console.log(firstPairRank,secondPairRank)
-  hand.map(elem => elem.rank === firstPairRank || elem.rank === secondPairRank ? elem : elem.isSelected = true) 
+  aiHand.map(elem => elem.rank === firstPairRank || elem.rank === secondPairRank ? elem : elem.isSelected = true) 
   
 }
 
-const threeOfAKindSolution = ( hand ) => {
+const threeOfAKindSolution = ( aiHand ) => {
 
-  const rateCards = new RateableCards(hand);
+  const rateCards = new RateableCards(aiHand);
   console.log((rateCards.byLengthValue)['3'][0][0].rank);
   const pairRank= (rateCards.byLengthValue)['3'][0][0].rank ;
-  hand.map(elem => elem.rank !== pairRank ? elem.isSelected = true : elem) 
+  aiHand.map(elem => elem.rank !== pairRank ? elem.isSelected = true : elem) 
 
 }
 
