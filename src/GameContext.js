@@ -12,6 +12,9 @@ export const GameProvider = props => {
   const [deck, setDeck] = useState(getDeck());
   const [myHand, setMyHand] = useState(null);
   const [aiHand, setAiHand] = useState(null);
+  const [displayWinner, setDisplayWinner] = useState(false);
+  const [displayReactIcon, setReactIcon] = useState(true);
+
 
   const changeMyHand = ([cards,newDeck]) => {
     setMyHand(cards);
@@ -23,6 +26,10 @@ export const GameProvider = props => {
     setDeck(newDeck);
   }
 
+  const changeVisibilityOfWinner = () => {
+    setDisplayWinner(true);
+    setReactIcon(false);
+  }
 
   const selectCard = (i,hand,limit) => {
    
@@ -35,25 +42,28 @@ export const GameProvider = props => {
 
   const tradeCards = (deck, hand, aiHand) => {
     const [newCards,newDeck] = dealCards(deck, countSelected(hand));
-    
+
     const newHand = hand.filter((card) => !(card.isSelected)).concat(newCards); 
     console.log(aiHand);
     const aiSelectedHand = aiBehavior(aiHand);
     console.log(aiSelectedHand);
     const [newAICards,finalDeck] = dealCards(newDeck, countSelected(aiSelectedHand));
     const newAiHand =  aiSelectedHand.filter((card) => !(card.isSelected)).concat(newAICards); 
-    
+
     setDeck(finalDeck);
     setMyHand(newHand);
     setAiHand(newAiHand);
-    
+
   }
   
+  const handleBid = (input) => {
+    console.log(input);
+  }
 
   const checkWinner = () => {
     
-    console.log(deck);
-    alert( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+    
+  return( <p>{PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!'}</p>);
   }
 
   return(
@@ -62,11 +72,15 @@ export const GameProvider = props => {
         deckValue: [deck,setDeck], 
         myHandValue: [myHand, setMyHand],
         aiHandValue: [aiHand, setAiHand],
+        displayWinners : [displayWinner, setDisplayWinner],
+        reactIcon : [displayReactIcon, setReactIcon],
         changeMyHand,
         changeAiHand,
         selectCard,
         tradeCards,
-        checkWinner
+        checkWinner,
+        changeVisibilityOfWinner,
+        handleBid
       }}>
       {props.children}
     </GameContext.Provider>

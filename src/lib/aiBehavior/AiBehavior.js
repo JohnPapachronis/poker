@@ -1,4 +1,4 @@
-import { RateableCards} from 'lib/cards/CardFunctions.js'
+import { RateableCards, groupBy, normalizeCard} from 'lib/cards/CardFunctions.js'
 import { pokerRateCards } from 'lib/poker/PokerFunctions.js';
 
 const aiBehavior = ( aiHand ) => {
@@ -16,10 +16,11 @@ const aiBehavior = ( aiHand ) => {
     default:  
       return aiHand;
   }
+
 }
-const onePairSolution = (hand) => {
-    const rateCards = new RateableCards(hand);
-    console.log((rateCards.byLengthValue)['2'][0][0].rank);
+
+const onePairSolution = (aiHand) => {
+    const rateCards = new RateableCards(aiHand);
     const pairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
     return hand
       .map(elem => elem.rank !== pairRank 
@@ -28,8 +29,8 @@ const onePairSolution = (hand) => {
     
 }
 
-const twoPairSolution =  ( hand ) => {
-  const rateCards = new RateableCards(hand);
+const twoPairSolution =  ( aiHand ) => {
+  const rateCards = new RateableCards(aiHand);
   const firstPairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
   const secondPairRank= (rateCards.byLengthValue)['2'][1][0].rank ;
   console.log(firstPairRank,secondPairRank)
@@ -37,12 +38,11 @@ const twoPairSolution =  ( hand ) => {
     .map(elem => !(elem.rank === firstPairRank || elem.rank === secondPairRank) 
       ? {...elem, isSelected : true} 
       : {...elem});
-  
 }
 
-const threeOfAKindSolution = ( hand ) => {
+const threeOfAKindSolution = ( aiHand ) => {
 
-  const rateCards = new RateableCards(hand);
+  const rateCards = new RateableCards(aiHand);
   console.log((rateCards.byLengthValue)['3'][0][0].rank);
   const pairRank = (rateCards.byLengthValue)['3'][0][0].rank ;
   return hand
