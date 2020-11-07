@@ -1,58 +1,46 @@
-import { RateableCards, groupBy, normalizeCard} from 'lib/cards/CardFunctions.js'
-import { pokerRateCards } from 'lib/poker/PokerFunctions.js';
+import { RateableCards} from 'lib/cards/CardFunctions'
+import { pokerRateCards } from 'lib/poker/PokerFunctions';
 
 const aiBehavior = ( aiHand ) => {
   
-  switch (pokerRateCards( aiHand )){
+  switch ( pokerRateCards(aiHand) ){
+    case 'FourOfAKind':
+      return nOfaKindSolution(aiHand, 4)
     case 'ThreeΟfaKind':
-      return threeOfAKindSolution(aiHand);
+      return nOfaKindSolution(aiHand, 3);
     case 'TwoPair':
       return twoPairSolution(aiHand);
     case 'OnePair':
-      return onePairSolution(aiHand);
+      return nOfaKindSolution(aiHand, 2);
     case 'HighCard':
-      console.log("H")
       return highCard(aiHand);
     default:  
       return aiHand;
   }
-
 }
-
-const onePairSolution = (aiHand) => {
-    const rateCards = new RateableCards(aiHand);
-    const pairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
+const nOfaKindSolution = (hand, n) => {
+    const rateCards = new RateableCards(hand);
+    console.log((rateCards.byLengthValue)[n][0][0].rank);
+    const pairRank= (rateCards.byLengthValue)[n][0][0].rank ;
     return hand
-      .map(elem => elem.rank !== pairRank 
-        ? {...elem, isSelected : true} 
-        : {...elem});
-    
+      .map(card => card.rank !== pairRank && card.weight<11 
+        ? {...card, isSelected : true} 
+        : {...card});
 }
 
-const twoPairSolution =  ( aiHand ) => {
-  const rateCards = new RateableCards(aiHand);
+const twoPairSolution = hand => {
+  const rateCards = new RateableCards(hand);
   const firstPairRank= (rateCards.byLengthValue)['2'][0][0].rank ;
   const secondPairRank= (rateCards.byLengthValue)['2'][1][0].rank ;
   console.log(firstPairRank,secondPairRank)
   return hand
-    .map(elem => !(elem.rank === firstPairRank || elem.rank === secondPairRank) 
-      ? {...elem, isSelected : true} 
-      : {...elem});
-}
-
-const threeOfAKindSolution = ( aiHand ) => {
-
-  const rateCards = new RateableCards(aiHand);
-  console.log((rateCards.byLengthValue)['3'][0][0].rank);
-  const pairRank = (rateCards.byLengthValue)['3'][0][0].rank ;
-  return hand
-    .map(elem => elem.rank !== pairRank 
-      ? {...elem, isSelected : true} 
-      : {...elem});
-
+    .map(card => !(card.rank === firstPairRank || card.rank === secondPairRank) && card.weight<11
+      ? {...card, isSelected : true} 
+      : {...card});
 }
 
 const highCard = hand => {
+
   const rateCards = new RateableCards(hand);
   if (rateCards.isStraight(4)) {
     const list = rateCards.straightList(4);
@@ -65,6 +53,7 @@ const highCard = hand => {
           .isSelected = true;
     return newHand;
   }
+
   const sortedHand = [...hand].sort( (a,b) => a.weight - b.weight );
   sortedHand.forEach(card => (card.weight<10)? card.isSelected=true : card );
   if (!rateCards.hasAce){
