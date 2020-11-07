@@ -1,10 +1,10 @@
 import React,{useState, createContext} from 'react';
 
 import { getDeck } from 'lib/cards/CardFunctions';
-import { dealCards, countSelected } from 'lib/cards/CardFunctions.js';
-import { PokerHand, pokerRateCards } from 'lib/poker/PokerFunctions.js';
+import { dealCards, countSelected } from 'lib/cards/CardFunctions';
+import { PokerHand, pokerRateCards } from 'lib/poker/PokerFunctions';
 
-import {aiBehavior} from 'lib/aiBehavior/AiBehavior.js'
+import {aiBehavior} from 'lib/aiBehavior/AiBehavior'
 export const GameContext = createContext(); 
 
 export const GameProvider = props => {
@@ -12,6 +12,8 @@ export const GameProvider = props => {
   const [deck, setDeck] = useState(getDeck());
   const [myHand, setMyHand] = useState(null);
   const [aiHand, setAiHand] = useState(null);
+  const [bidAmount, setBidAmount] = useState(0);
+  const [walletAmount, setWalletAmount] = useState(10000);
   const [displayWinner, setDisplayWinner] = useState(false);
   const [displayReactIcon, setReactIcon] = useState(true);
 
@@ -27,12 +29,11 @@ export const GameProvider = props => {
   }
 
   const changeVisibilityOfWinner = () => {
-    setDisplayWinner(true);
-    setReactIcon(false);
+    setDisplayWinner(!displayWinner);
+    setReactIcon(!displayReactIcon);
   }
 
   const selectCard = (i,hand,limit) => {
-   
     const card = {...hand[i]};
     hand.some(card => card.rank === "A") && limit++ ;
     if (countSelected(hand) < limit || card.isSelected == true) card.isSelected = card.isSelected ? false : true ;
@@ -42,7 +43,6 @@ export const GameProvider = props => {
 
   const tradeCards = (deck, hand, aiHand) => {
     const [newCards,newDeck] = dealCards(deck, countSelected(hand));
-
     const newHand = hand.filter((card) => !(card.isSelected)).concat(newCards); 
     console.log(aiHand);
     const aiSelectedHand = aiBehavior(aiHand);
@@ -53,18 +53,29 @@ export const GameProvider = props => {
     setDeck(finalDeck);
     setMyHand(newHand);
     setAiHand(newAiHand);
-
   }
   
   const handleBid = (input) => {
     console.log(input);
   }
 
+  const reset = () => {
+    changeVisibilityOfWinner();
+    console.log(deck);
+    const [cards, newDeck] = dealCards(deck, 5);
+    changeMyHand( [cards, newDeck] );
+    changeAiHand( dealCards(newDeck, 5) );
+  }
+
   const checkWinner = () => {
     
-    
-  return( <p>{PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!'}</p>);
-  }
+    const final = walletAmount + 2*bidAmount;
+    if (PokerHand(myHand) > PokerHand(aiHand)) setWalletAmount(final);
+    setBidAmount(0);
+    return ( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+
+  } 
+  
 
   return(
     <GameContext.Provider value = 
@@ -72,6 +83,8 @@ export const GameProvider = props => {
         deckValue: [deck,setDeck], 
         myHandValue: [myHand, setMyHand],
         aiHandValue: [aiHand, setAiHand],
+        bidAmountValue: [bidAmount, setBidAmount],
+        walletAmountValue: [walletAmount, setWalletAmount],
         displayWinners : [displayWinner, setDisplayWinner],
         reactIcon : [displayReactIcon, setReactIcon],
         changeMyHand,
@@ -80,7 +93,8 @@ export const GameProvider = props => {
         tradeCards,
         checkWinner,
         changeVisibilityOfWinner,
-        handleBid
+        handleBid,
+        reset,
       }}>
       {props.children}
     </GameContext.Provider>

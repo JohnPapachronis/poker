@@ -1,12 +1,9 @@
 import React, { useEffect, useContext } from 'react';
 
-import {GameContext} from 'GameContext.js';
+import {GameContext} from 'GameContext';
 
-import Board from 'components/board/Board.js';
-
-import { dealCards } from 'lib/cards/CardFunctions.js';
-
-
+import Board from 'components/board/Board';
+import { dealCards } from 'lib/cards/CardFunctions';
 
 const Game = () => {
   
@@ -21,8 +18,7 @@ const Game = () => {
   },[]);
 
   return (  
-    <Board 
-    />
+    <Board/>
   )
 }
 

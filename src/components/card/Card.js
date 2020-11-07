@@ -13,7 +13,7 @@ const Card = ({
   ? (
       <div className="playingCards">
         
-        <a style={selected ?{border:'5px solid black'} : {} }
+        <a style={selected ?{border:'5px solid black'} : {border: '5px solid white'} }
           className={"card rank-"+rank.toLowerCase()+" "+suit} 
           onClick={() => onClick()}
           href='#'
