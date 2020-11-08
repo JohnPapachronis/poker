@@ -4,14 +4,16 @@ function suffle(deck){
 
 const Suits = ["spades", "diams", "clubs", "hearts"];
 const Ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-const Deck = Suits.map(suit => Ranks.map(rank => ({
-  rank, 
-  suit, 
-  isSelected: false,
-}))).flat();
+
 
 function getDeck(){
-	return suffle([...Deck]);
+  const Deck = Suits.map(suit => Ranks.map(rank => ({
+    rank, 
+    suit, 
+    isSelected: false,
+  }))).flat();
+
+	return suffle(Deck);
 }
 
 function dealCards(deck, numOfCards){

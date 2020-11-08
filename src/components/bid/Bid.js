@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Bid = () => {
   const [amount, setAmount] = useState(0);
-  const {bidAmountValue} = useContext(GameContext);
+  const {bidAmountValue, walletAmountValue, phaseValue} = useContext(GameContext);
   const [bidAmount, setBidAmount] = bidAmountValue;
-  const {walletAmountValue} = useContext(GameContext);
   const [walletAmount, setWalletAmount] = walletAmountValue;
+  const [phase, setPhase] = phaseValue;
 
   const updateAmount = (e) => {
     setAmount(e.target.value);
@@ -34,6 +34,7 @@ const Bid = () => {
     if (Number(amount)>walletAmount) return; 
     setBidAmount(bidAmount + Number(amount));
     setWalletAmount(walletAmount - Number(amount));
+    setPhase(phase===1 && Number(amount)>0? 2 : phase);
   };
 
   const classes = useStyles();
@@ -46,11 +47,11 @@ const Bid = () => {
           type="number" 
           error={amount>walletAmount}
           name="amount" 
-          value={amount} 
+          value={amount}
           onChange={updateAmount}
         />
         <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-          <Button type="submit">Bid</Button>
+          <Button type="submit" disabled = { phase > 3 } >Bid</Button>
         </ButtonGroup> 
       </form>
       Pot: {bidAmount} €

@@ -12,11 +12,13 @@ export const GameProvider = props => {
   const [deck, setDeck] = useState(getDeck());
   const [myHand, setMyHand] = useState(null);
   const [aiHand, setAiHand] = useState(null);
+  const [winner, setWinner] = useState(null);
   const [bidAmount, setBidAmount] = useState(0);
   const [walletAmount, setWalletAmount] = useState(10000);
   const [displayWinner, setDisplayWinner] = useState(false);
   const [displayReactIcon, setReactIcon] = useState(true);
-
+  const [phase, setPhase] = useState(1);
+  const [numberOfRounds, setNumberOfRounds] = useState(1);
 
   const changeMyHand = ([cards,newDeck]) => {
     setMyHand(cards);
@@ -29,8 +31,14 @@ export const GameProvider = props => {
   }
 
   const changeVisibilityOfWinner = () => {
+    setPhase(4);
     setDisplayWinner(!displayWinner);
     setReactIcon(!displayReactIcon);
+    
+  }
+
+  const changePhase = () => {
+    setPhase(( phase === 4 ) ? 1 : phase + 1);
   }
 
   const selectCard = (i,hand,limit) => {
@@ -53,26 +61,27 @@ export const GameProvider = props => {
     setDeck(finalDeck);
     setMyHand(newHand);
     setAiHand(newAiHand);
-  }
-  
-  const handleBid = (input) => {
-    console.log(input);
+    setPhase(3);
   }
 
   const reset = () => {
     changeVisibilityOfWinner();
-    console.log(deck);
-    const [cards, newDeck] = dealCards(deck, 5);
+    const resetDeck = numberOfRounds >= 3 ? getDeck() : deck;
+    console.log(resetDeck);
+    const [cards, newDeck] = dealCards(resetDeck, 5);
     changeMyHand( [cards, newDeck] );
     changeAiHand( dealCards(newDeck, 5) );
+    setPhase(1);
+    setNumberOfRounds(numberOfRounds < 3 ? numberOfRounds +1 : 1);
   }
 
   const checkWinner = () => {
     
     const final = walletAmount + 2*bidAmount;
-    if (PokerHand(myHand) > PokerHand(aiHand)) setWalletAmount(final);
+    setWalletAmount(PokerHand(myHand) > PokerHand(aiHand) ? final : walletAmount);
     setBidAmount(0);
-    return ( PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+    setWinner(PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+    changeVisibilityOfWinner();
 
   } 
   
@@ -87,14 +96,16 @@ export const GameProvider = props => {
         walletAmountValue: [walletAmount, setWalletAmount],
         displayWinners : [displayWinner, setDisplayWinner],
         reactIcon : [displayReactIcon, setReactIcon],
+        winnerValue: [winner, setWinner],
+        phaseValue : [phase, setPhase] ,
         changeMyHand,
         changeAiHand,
         selectCard,
         tradeCards,
         checkWinner,
         changeVisibilityOfWinner,
-        handleBid,
         reset,
+        changePhase
       }}>
       {props.children}
     </GameContext.Provider>

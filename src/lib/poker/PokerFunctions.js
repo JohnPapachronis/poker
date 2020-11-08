@@ -37,9 +37,9 @@ const PokerHand = hand => {
 
   const combination = pokerRateCards(hand);
   const stringValue = comboValue(combination) + handValue(hand);
-  console.log(hand);
-  console.log('COMBINATION: ----------- ' + combination); 
-  console.log( comboValue(combination)+' + ' + handValue(hand) + ' = ' + stringValue);
+  //console.log(hand);
+  //console.log('COMBINATION: ----------- ' + combination); 
+  //console.log( comboValue(combination)+' + ' + handValue(hand) + ' = ' + stringValue);
  
   
   return stringValue;

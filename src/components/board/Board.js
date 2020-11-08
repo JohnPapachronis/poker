@@ -12,15 +12,15 @@ import Input from '@material-ui/core/Input';
 
 const Board = () => {
   
-  const { deckValue,myHandValue, displayWinners, reactIcon, aiHandValue, selectCard, handleBid, tradeCards, checkWinner,changeVisibilityOfWinner, reset} = useContext(GameContext);
+  const { deckValue,myHandValue, winnerValue, displayWinners, phaseValue, reactIcon, aiHandValue, selectCard, tradeCards, checkWinner, reset} = useContext(GameContext);
 
-  const [deck, setDeck] = deckValue;
-  const [myHand, setMyHand] = myHandValue;
-  const [aiHand, setAiHand] = aiHandValue;
-  const [displayWinner, setDisplayWinner] = displayWinners;
-  const [displayReactIcon, setReactIcon] = reactIcon;
-
-  
+  const [deck] = deckValue;
+  const [myHand] = myHandValue;
+  const [aiHand] = aiHandValue;
+  const [displayWinner] = displayWinners;
+  const [displayReactIcon] = reactIcon;
+  const [phase] = phaseValue;
+  const [winner] = winnerValue;
 
   return (
     
@@ -29,8 +29,8 @@ const Board = () => {
         
         <div className = "Buttons">
             <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-              <Button onClick={() => tradeCards(deck, myHand, aiHand)}>Trade Cards</Button>
-              <Button  onClick={() => changeVisibilityOfWinner()}>Check Winner</Button>
+              <Button onClick={() => tradeCards(deck, myHand, aiHand)} disabled = {phase!==2}>Trade Cards</Button>
+              <Button  onClick={() => checkWinner() } disabled = {phase!==3}>Check Winner</Button>
             </ButtonGroup>
         </div>
         <div className = "enemyBoard">
@@ -38,7 +38,7 @@ const Board = () => {
         </div>
         {displayWinner && (
           <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-            <Button  onClick = {() => {reset()}} type="submit"> {checkWinner()} </Button> 
+            <Button  onClick = {() => {reset()}} type="submit" disabled = {phase!==4}> {winner}  </Button> 
           </ButtonGroup> 
         )}
         <div className = "ReactLogo">
