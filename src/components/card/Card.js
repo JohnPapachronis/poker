@@ -25,7 +25,7 @@ const Card = ({
   ) 
   : (
       <div className="playingCards"> 
-        <div className="card back" >*</div>
+        <div className="card back" ></div>
       </div>
   )
 )

@@ -34,7 +34,7 @@ const Board = () => {
             </ButtonGroup>
         </div>
         <div className = "enemyBoard">
-          {aiHand && <Hand id="aiHand" hand={aiHand} visible={true} onClick = {()=>{}} /> }
+          {aiHand && <Hand id="aiHand" hand={aiHand} visible={phase === 4} onClick = {()=>{}} /> }
         </div>
         {displayWinner && (
           <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
