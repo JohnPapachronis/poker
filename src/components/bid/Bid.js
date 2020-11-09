@@ -31,10 +31,10 @@ const Bid = () => {
 
   const bid = e => {
     e.preventDefault();
-    if (Number(amount)>walletAmount) return; 
+    if (amount>walletAmount || amount<10 ) return; 
     setBidAmount(bidAmount + Number(amount));
     setWalletAmount(walletAmount - Number(amount));
-    setPhase(phase===1 && Number(amount)>0? 2 : phase);
+    setPhase(phase===1 && amount > 0 ? 2 : phase);
   };
 
   const classes = useStyles();
@@ -45,7 +45,7 @@ const Bid = () => {
         <Input 
           className={classes.formControl} 
           type="number" 
-          error={amount>walletAmount}
+          error={amount>walletAmount || amount<10}
           name="amount" 
           value={amount}
           onChange={updateAmount}

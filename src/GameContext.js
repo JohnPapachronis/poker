@@ -31,7 +31,6 @@ export const GameProvider = props => {
   }
 
   const changeVisibilityOfWinner = () => {
-    setPhase(4);
     setDisplayWinner(!displayWinner);
     setReactIcon(!displayReactIcon);
     
@@ -81,8 +80,8 @@ export const GameProvider = props => {
     setWalletAmount(PokerHand(myHand) > PokerHand(aiHand) ? final : walletAmount);
     setBidAmount(0);
     setWinner(PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
+    setPhase(4);
     changeVisibilityOfWinner();
-
   } 
   
 
