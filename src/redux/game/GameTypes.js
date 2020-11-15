@@ -1,0 +1,2 @@
+export const START_NEW_GAME = 'START_NEW_GAME';
+export const START_NEXT_ROUND = 'START_NEXT_ROUND';
