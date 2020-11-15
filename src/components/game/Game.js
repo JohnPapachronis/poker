@@ -8,7 +8,7 @@ import { dealCards } from 'lib/cards/CardFunctions';
 const Game = () => {
   
   const {deckValue,changeMyHand,changeAiHand} = useContext(GameContext);
-  const [deck, setDeck] = deckValue;
+  const [deck] = deckValue;
   
   useEffect(() => {
     const [cards, newDeck] = dealCards(deck, 5);
