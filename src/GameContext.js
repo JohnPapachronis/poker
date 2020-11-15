@@ -3,9 +3,11 @@ import React,{useState, createContext} from 'react';
 import { getDeck } from 'lib/cards/CardFunctions';
 import { dealCards, countSelected } from 'lib/cards/CardFunctions';
 import { PokerHand, pokerRateCards } from 'lib/poker/PokerFunctions';
-
+import { useSelector, useDispatch } from 'react-redux';
 import {aiBehavior} from 'lib/aiBehavior/AiBehavior'
 export const GameContext = createContext(); 
+
+
 
 export const GameProvider = props => {
   
@@ -33,7 +35,6 @@ export const GameProvider = props => {
   const changeVisibilityOfWinner = () => {
     setDisplayWinner(!displayWinner);
     setReactIcon(!displayReactIcon);
-    
   }
 
   const changePhase = () => {
@@ -66,6 +67,9 @@ export const GameProvider = props => {
   }
 
   const reset = () => {
+
+
+
     changeVisibilityOfWinner();
     const resetDeck = numberOfRounds >= 3 ? getDeck() : deck;
     console.log(resetDeck);
@@ -84,6 +88,7 @@ export const GameProvider = props => {
     setWinner(PokerHand(myHand) > PokerHand(aiHand) ? 'You win!' : 'AI wins!');
     setPhase(4);
     changeVisibilityOfWinner();
+
   } 
   
 
