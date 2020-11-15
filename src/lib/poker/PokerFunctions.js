@@ -1,4 +1,4 @@
-import { RateableCards, normalizeCard,groupBy } from '../cards/CardFunctions.js'
+import { RateableCards } from '../cards/CardFunctions.js'
 
 const pokerRatings = {
   RoyalStraightFlush: hand => hand.isStraight(5) && hand.isSameSuit() && hand.hasAce(),

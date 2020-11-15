@@ -29,7 +29,12 @@ const Board = () => {
         
         <div className = "Buttons">
             <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-              <Button onClick={() => tradeCards(deck, myHand, aiHand)} disabled = {phase!==2}>Trade Cards</Button>
+              <Button onClick={() => {
+                //console.log('Board onCLick ', aiHand);
+                tradeCards(deck, myHand, aiHand);
+              }
+                
+                } disabled = {phase!==2}>Trade Cards</Button>
               <Button  onClick={() => checkWinner() } disabled = {phase!==3}>Check Winner</Button>
             </ButtonGroup>
         </div>

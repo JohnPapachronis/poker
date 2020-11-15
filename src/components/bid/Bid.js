@@ -34,7 +34,7 @@ const Bid = () => {
     if (amount>walletAmount || amount<10 ) return; 
     setBidAmount(bidAmount + Number(amount));
     setWalletAmount(walletAmount - Number(amount));
-    setPhase(phase===1 && amount > 0 ? 2 : phase);
+    setPhase(phase===1 ? 2 : phase);
   };
 
   const classes = useStyles();

@@ -23,7 +23,7 @@ const nOfaKindSolution = (hand, n) => {
     console.log((rateCards.byLengthValue)[n][0][0].rank);
     const pairRank= (rateCards.byLengthValue)[n][0][0].rank ;
     return hand
-      .map(card => card.rank !== pairRank && card.weight<11 
+      .map(card => card.rank !== pairRank && card.weight<13 
         ? {...card, isSelected : true} 
         : {...card});
 }
@@ -34,7 +34,7 @@ const twoPairSolution = hand => {
   const secondPairRank= (rateCards.byLengthValue)['2'][1][0].rank ;
   console.log(firstPairRank,secondPairRank)
   return hand
-    .map(card => !(card.rank === firstPairRank || card.rank === secondPairRank) && card.weight<11
+    .map(card => !(card.rank === firstPairRank || card.rank === secondPairRank) && card.weight<13
       ? {...card, isSelected : true} 
       : {...card});
 }
@@ -55,12 +55,12 @@ const highCard = hand => {
   }
 
   const sortedHand = [...hand].sort( (a,b) => a.weight - b.weight );
-  sortedHand.forEach(card => (card.weight<10)? card.isSelected=true : card );
-  if (!rateCards.hasAce){
-    sortedHand[3].isSelected=false;
-    sortedHand[4].isSelected=false;
+  const newHand = sortedHand.map( card => card.weight<11 ? {...card, isSelected: true} : {...card} );
+  if (!rateCards.hasAce()){
+    newHand[3].isSelected=false;
+    newHand[4].isSelected=false;
   }
-  return sortedHand;
+  return newHand;
 
 }
 
