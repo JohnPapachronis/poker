@@ -12,7 +12,7 @@ const Hand = ({
     <div className="playingCards">
       <ul className="table">
         {hand.map(({rank, suit, isSelected}, i) => 
-          <li key={"card_"+rank+"_"+suit}>
+          <li key={"card_"+i}>
             <Card 
               rank={rank} 
               suit={suit} 

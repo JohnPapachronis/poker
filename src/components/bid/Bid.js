@@ -1,8 +1,8 @@
-import React, {useState, useContext} from 'react';
-import { GameContext } from 'GameContext';
+import React, {useState, useContext, forwardRef} from 'react';
+import { bidChange } from 'redux/game/GameActions'
+import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import FormControl from '@material-ui/core/FormControl'
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Bid = () => {
   const [amount, setAmount] = useState(0);
-  const {bidAmountValue, walletAmountValue, phaseValue} = useContext(GameContext);
-  const [bidAmount, setBidAmount] = bidAmountValue;
-  const [walletAmount, setWalletAmount] = walletAmountValue;
-  const [phase, setPhase] = phaseValue;
+  const dispatch = useDispatch();
+  const phase = useSelector(state => state.phase);
+  const walletAmount = useSelector(state => state.walletAmount);
+  const bidAmount = useSelector(state => state.bidAmount);
 
   const updateAmount = (e) => {
     setAmount(e.target.value);
@@ -31,10 +31,7 @@ const Bid = () => {
 
   const bid = e => {
     e.preventDefault();
-    if (amount>walletAmount || amount<10 ) return; 
-    setBidAmount(bidAmount + Number(amount));
-    setWalletAmount(walletAmount - Number(amount));
-    setPhase(phase===1 ? 2 : phase);
+    dispatch(bidChange(Number(amount)));
   };
 
   const classes = useStyles();
@@ -58,8 +55,8 @@ const Bid = () => {
       Wallet: {walletAmount} €
 
     </div>
-   
   )
+
 }
 
 export default Bid;

@@ -4,7 +4,7 @@ import { getDeck } from 'lib/cards/CardFunctions';
 import { dealCards, countSelected } from 'lib/cards/CardFunctions';
 import { PokerHand, pokerRateCards } from 'lib/poker/PokerFunctions';
 import { useSelector, useDispatch } from 'react-redux';
-import {aiBehavior} from 'lib/aiBehavior/AiBehavior'
+import { aiBehavior } from 'lib/aiBehavior/AiBehavior'
 export const GameContext = createContext(); 
 
 
@@ -41,15 +41,13 @@ export const GameProvider = props => {
     setPhase(( phase === 4 ) ? 1 : phase + 1);
   }
 
-  const selectCard = (i,hand,limit) => {
-    const card = {...hand[i]};
-    hand.some(card => card.rank === "A") && limit++ ;
-    if (countSelected(hand) < limit || card.isSelected == true) card.isSelected = card.isSelected ? false : true ;
-    setMyHand([...hand.slice(0,i), card, ...hand.slice(i+1)]);
+  const selectCard = (i,limit) => {
+    const card = {...myHand[i]};
+    myHand.some(card => card.rank === "A") && limit++ ;
+    if (countSelected(myHand) < limit || card.isSelected == true) card.isSelected = card.isSelected ? false : true ;
+    setMyHand([...myHand.slice(0,i), card, ...myHand.slice(i+1)]);
   }
   
-  let x = 0;
-
   const tradeCards = (deck, hand, aiHand) => {
 
     const [newCards,newDeck] = dealCards(deck, countSelected(hand));
@@ -67,8 +65,6 @@ export const GameProvider = props => {
   }
 
   const reset = () => {
-
-
 
     changeVisibilityOfWinner();
     const resetDeck = numberOfRounds >= 3 ? getDeck() : deck;
