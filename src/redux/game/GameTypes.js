@@ -1,2 +1,6 @@
 export const START_NEW_GAME = 'START_NEW_GAME';
 export const START_NEXT_ROUND = 'START_NEXT_ROUND';
+export const CARD_SELECTED = 'CARD_SELECTED';
+export const CARDS_TRADED = "CARDS_TRADED";
+export const WINNER_CHECKED = "WINNER_CHECKED";
+export const BID_CHANGED = "BID_CHANGED";

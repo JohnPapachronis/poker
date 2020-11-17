@@ -57,8 +57,8 @@ const highCard = hand => {
   const sortedHand = [...hand].sort( (a,b) => a.weight - b.weight );
   const newHand = sortedHand.map( card => card.weight<11 ? {...card, isSelected: true} : {...card} );
   if (!rateCards.hasAce()){
-    newHand[3].isSelected=false;
-    newHand[4].isSelected=false;
+    newHand[3].isSelected = false;
+    newHand[4].isSelected = false;
   }
   return newHand;
 
